@@ -1,5 +1,5 @@
 module Common
-    (fib, fibI, palindrome)
+    (fib, fibI, palindrome, consecElems)
   where
 
 import Data.List
@@ -15,3 +15,8 @@ palindrome :: Eq a => [a] -> Bool
 palindrome [] = True
 palindrome (x : []) = True
 palindrome (x : xs) = (x == last xs) && palindrome (take ((length xs) - 1) xs)
+
+-- The list of n consecutive elements in a list
+consecElems :: Int -> [a] -> [[a]]
+consecElems 1 list = map return list
+consecElems n list = zipWith (++) (consecElems (n-1) list) (map return (drop (n-1) list))
