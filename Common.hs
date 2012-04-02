@@ -1,8 +1,20 @@
 module Common
-    (fib, fibI, palindrome, consecElems)
+    (combinations, multicombinations, fib, fibI, palindrome, consecElems)
   where
 
 import Data.List
+
+-- k-Combinations
+combinations :: Int -> [a] -> [[a]]
+combinations 0 _ = [[]]
+combinations _ [] = []
+combinations k xxs@(x:xs) = map (x:) (combinations (k-1) xs) ++ combinations k xs
+
+-- k-Multicombinations (aka multisets or combinations with repetitions)
+multicombinations :: Int -> [a] -> [[a]]
+multicombinations 0 _ = [[]]
+multicombinations _ [] = []
+multicombinations k xxs@(x:xs) = map (x:) (multicombinations (k-1) xxs) ++ multicombinations k xs
 
 -- Infinite recursive list of the Fibonacci sequence
 fib = unfoldr (\(x,y) -> Just (x, (y,x+y))) (0, 1)
