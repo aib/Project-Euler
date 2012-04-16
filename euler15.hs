@@ -28,4 +28,8 @@ paths (Just ct, g) p s e = (concatMap (\(ne,nn) -> paths (match nn g) (p ++ [ne]
   where
     toAdjs = (\(_,_,_,a) -> a)
 
-main = print $ length $ paths (Just (context graph 0), graph) [[]] 0 (width*height - 1)
+--main = print $ length $ paths (Just (context graph 0), graph) [] 0 (width*height - 1)
+
+--path is a string of 40 movements, 20 of which go right and 20 down: (R|D){40} where count(R) = count(D) = 20
+--40! total permutations, divide 20! because Rs are indistinct, 20! because Ds are indistinct
+main = print $ product [1..40] `div` product [1..20] `div` product [1..20]
