@@ -1,5 +1,5 @@
 module Common
-    (combinations, multicombinations, fib, fibI, palindrome, consecElems)
+    (combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations)
   where
 
 import Data.List
@@ -32,3 +32,8 @@ palindrome (x : xs) = (x == last xs) && palindrome (take ((length xs) - 1) xs)
 consecElems :: Int -> [a] -> [[a]]
 consecElems 1 list = map return list
 consecElems n list = zipWith (++) (consecElems (n-1) list) (map return (drop (n-1) list))
+
+-- Rotations of a list (abc -> abc, bca, cab)
+rotations xs = take (length xs) $ iterate rot1 xs
+  where
+    rot1 (x:xs) = xs ++ [x]
