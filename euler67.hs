@@ -32,10 +32,13 @@ graphFromRows' (r:rs) = ((insEdges ledges . insEdges redges . insNodes r) graph,
     redges = zipWith3 (,,) curnodes (tail subnodes) (repeat ())
 
 bestPath :: Gr NodeLabel EdgeLabel -> Node -> ([Node], Int)
-bestPath g n
+bestPath = (fix bestPath')
+
+bestPath' :: (Gr NodeLabel EdgeLabel -> Node -> ([Node], Int)) -> Gr NodeLabel EdgeLabel -> Node -> ([Node], Int)
+bestPath' self g n
     | preds == [] = ([n], getLabel n)
     | otherwise   = let (path, cost) = maximumBy (compare `on` snd) predPaths in (path ++ [n], cost + getLabel n)
   where
     preds = pre g n
-    predPaths = map (bestPath g) preds
+    predPaths = map (self g) preds
     getLabel = fromJust . lab g
