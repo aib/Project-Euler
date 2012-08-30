@@ -1,26 +1,18 @@
 import Data.Function
 import Data.List
 import Data.List.Split
-import Common
-
-import Debug.Trace
 
 main = do
     numLines <- readFile "euler99-base_exp.txt"
-    nums <- return . (map readLine) . lines $ numLines 
-    print $ getLargest nums
+    nums <- return . zipWith (,) [1..] . map readLine . lines $ numLines
+    print $ {-fst $-} maximumBy (compare' `on` snd) nums
   where
-    readLine = (\[b,e] -> ((read::String->Integer) b, (read::String->Int) e)) . wordsBy (== ',')
+    readLine = (\[b,e] -> ((read::String->Integer) b, (read::String->Integer) e)) . wordsBy (== ',')
 
-getLargest :: [(Integer,Int)] -> (Integer,Int)
-getLargest nums = head $ until ((==1) . length) reduce nums  
-
-augmentWithGcds :: [(Integer,Int)] -> [(Integer,(Integer,Int),(Integer,Int))]
-augmentWithGcds = map (\[(e1,b1),(e2,b2)] -> (gcd e1 e2,(e1,b1),(e2,b2))) . combinations 2
-
-reduce :: [(Integer,Int)] -> [(Integer,Int)]
-reduce ns = trace (show largestGcd ++ " " ++ show (length ns)) $ delete (smallerInPair largestGcd) ns
+compare' :: (Integer,Integer) -> (Integer,Integer) -> Ordering
+compare' (b1,e1) (b2,e2) = compare (e1' * log b1') (e2' * log b2')
   where
-    largestGcd = maximumBy (compare `on` (\(x,_,_) -> x)) (augmentWithGcds ns)
-    smallerInPair (gcd,(b1,e1),(b2,e2)) = if ((b1 `div` gcd) ^ e1) < ((b2 `div` gcd) ^ e2) then (b1,e1) else (b2,e2)
-  
+    b1' = fromInteger b1
+    b2' = fromInteger b2
+    e1' = fromInteger e1
+    e2' = fromInteger e2
