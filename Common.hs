@@ -31,7 +31,7 @@ palindrome (x : xs) = (x == last xs) && palindrome (take ((length xs) - 1) xs)
 -- The list of n consecutive elements in a list
 consecElems :: Int -> [a] -> [[a]]
 consecElems 1 list = map return list
-consecElems n list = zipWith (++) (consecElems (n-1) list) (map return (drop (n-1) list))
+consecElems n list = zipWith (++) (consecElems (n-1) list) (consecElems 1 (drop (n-1) list))
 
 -- Rotations of a list (abc -> abc, bca, cab)
 rotations xs = take (length xs) $ iterate rot1 xs
