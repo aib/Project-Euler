@@ -7,11 +7,11 @@ abundant n = properDivSum n > n
 
 abundants = filter abundant [1..28123]
 
-removePairSums terms ns = pipe (S.fromList ns) (map S.delete sums')
+removePairSumsLessThan maxValue terms ns = pipe (S.fromList ns) (map S.delete sums')
   where
     sums = [n1 + n2 | n1 <- terms, n2 <- terms]
-    sums' = S.toList . S.fromList $ sums
+    sums' = S.toList . S.fromList $ filter (<= maxValue) sums
     pipe = foldl (flip ($))
 
 main = print $
-    sum $ S.toList $ removePairSums abundants [1..28123]
+    sum $ S.toList $ removePairSumsLessThan 28123 abundants [1..28123]
