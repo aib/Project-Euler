@@ -1,8 +1,17 @@
 module Common
-    (combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations)
+    (ordPermutations, combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations)
   where
 
 import Data.List
+
+-- Ordered permutations
+ordPermutations :: [a] -> [[a]]
+ordPermutations [] = [[]]
+ordPermutations xs = concatMap (doNthPos xs) [0..length xs - 1]
+  where
+    doNthPos xs n = map ((nthHead xs n) :) (ordPermutations (nthTail xs n))
+    nthHead xs n = xs !! n
+    nthTail xs n = take n xs ++ drop (n + 1) xs
 
 -- k-Combinations
 combinations :: Int -> [a] -> [[a]]
