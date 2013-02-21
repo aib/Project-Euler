@@ -5,9 +5,13 @@ abundant n = properDivSum n > n
   where
     properDivSum x = sum . S.toList . (S.delete x) . divisors $ x
 
-sumOfTwo xs n = or [(n - x) `elem` xs | x <- xs]
+abundants = filter abundant [1..28123]
+
+removePairSums terms ns = pipe (S.fromList ns) (map S.delete sums')
+  where
+    sums = [n1 + n2 | n1 <- terms, n2 <- terms]
+    sums' = S.toList . S.fromList $ sums
+    pipe = foldl (flip ($))
 
 main = print $
-    sum $ filter (sumOfTwo abundants) [1..28123]
-  where
-    abundants = filter abundant [1..28123]
+    sum $ S.toList $ removePairSums abundants [1..28123]
