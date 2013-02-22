@@ -1,1 +1,4 @@
-(\x -> ((^2).sum) x - (sum . map (^2)) x) [1..100]
+import Control.Applicative
+
+main = print $
+    liftA2 (-) ((^2).sum) (sum . map (^2)) [1..100]
