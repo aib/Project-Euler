@@ -1,8 +1,11 @@
+{-# LANGUAGE TupleSections #-}
+
 module Common
-    (ordPermutations, combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations)
+    (ordPermutations, combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations, countElems)
   where
 
 import Data.List
+import qualified Data.Map as Map
 
 -- Ordered permutations
 ordPermutations :: [a] -> [[a]]
@@ -46,3 +49,7 @@ consecElems n list = zipWith (++) (consecElems (n-1) list) (consecElems 1 (drop 
 rotations xs = take (length xs) $ iterate rot1 xs
   where
     rot1 (x:xs) = xs ++ [x]
+
+-- Count of all elements in a list
+countElems :: Ord a => [a] -> [(a, Int)]
+countElems = Map.toList . Map.fromListWith (+) . map (,1)
