@@ -1,11 +1,12 @@
 {-# LANGUAGE TupleSections #-}
 
 module Common
-    (ordPermutations, combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations, countElems)
+    (ordPermutations, combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations, countElems, pandigital)
   where
 
 import Data.List
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 
 -- Ordered permutations
 ordPermutations :: [a] -> [[a]]
@@ -53,3 +54,7 @@ rotations xs = take (length xs) $ iterate rot1 xs
 -- Count of all elements in a list
 countElems :: Ord a => [a] -> [(a, Int)]
 countElems = Map.toList . Map.fromListWith (+) . map (,1)
+
+-- Pandigital numbers
+pandigital :: [Integer] -> Bool
+pandigital = (== 9) . length . Set.toList . (Set.filter (/= 0)) . Set.fromList
