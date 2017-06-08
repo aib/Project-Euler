@@ -57,4 +57,4 @@ countElems = Map.toList . Map.fromListWith (+) . map (,1)
 
 -- Pandigital numbers
 pandigital :: [Integer] -> Bool
-pandigital = (== 9) . length . Set.toList . (Set.filter (/= 0)) . Set.fromList
+pandigital n = (length n == 9) && length (Set.toList . (Set.filter (/= 0)) . Set.fromList $ n) == 9
