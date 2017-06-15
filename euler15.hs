@@ -1,6 +1,5 @@
 import Data.Graph.Inductive.Graph
 import Data.Graph.Inductive.Tree
-import Data.Graph.Inductive.Graphviz
 
 width = 5
 height = 5
