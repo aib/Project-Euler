@@ -1,6 +1,9 @@
 module Roman
-    (romans)
+    (romans, fromRoman)
   where
+
+import Control.Arrow
+import Data.List.Split
 
 romans :: Bool -> Int -> [String]
 romans subtractive num = [th ++ hu ++ te ++ on |
@@ -20,3 +23,9 @@ romans subtractive num = [th ++ hu ++ te ++ on |
     (hundreds, hu_rem) = th_rem `divMod` 100
     (tens, te_rem) = hu_rem `divMod` 10
     ones = te_rem
+
+fromRoman :: String -> Int
+fromRoman str = snd $ foldl addval (str, 0) tvs
+  where
+    addval (str, val) (token, tokenVal) = (concat &&& (val +). (tokenVal *) . (subtract 1) . length) $ splitOn token str
+    tvs = [("CM", 900), ("M", 1000), ("CD", 400), ("D", 500), ("XC", 90), ("C", 100), ("XL", 40), ("L", 50), ("IX", 9), ("X", 10), ("IV", 4), ("V", 5), ("I", 1)]
