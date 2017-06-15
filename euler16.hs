@@ -1,3 +1,4 @@
 import Data.Digits
 
-(sum . digits 10) $ 2^1000
+main = print $
+    (sum . digits 10) $ 2^1000
