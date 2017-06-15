@@ -10,6 +10,6 @@ muls = map (\x -> [1..x]) [2..9]
 panmuls x = map (panmul x) muls
 
 main = print $ concatMap show $
-  (last . sort) $ (filter pandigital) (concat feasibles)
+  (last . sort) $ (filter (pandigital 9)) (concat feasibles)
     where
   feasibles = takeWhile (any (\x -> length x < 10)) $ map panmuls [1..]
