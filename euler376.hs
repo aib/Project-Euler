@@ -2,13 +2,13 @@ pipN = 7
 dieSides = 6
 
 -- Multicombination, multiset or combination with repetitions
-combsWithRep :: Num k => k -> [a] -> [[a]]
+combsWithRep :: (Num k, Eq k) => k -> [a] -> [[a]]
 combsWithRep 0 _ = [[]]
 combsWithRep _ [] = []
 combsWithRep k xxs@(x:xs) = map (x:) (combsWithRep (k-1) xxs) ++ combsWithRep k xs
 
 -- Combination
-combs :: Num k => k -> [a] -> [[a]]
+combs :: (Num k, Eq k) => k -> [a] -> [[a]]
 combs 0 _ = [[]]
 combs _ [] = []
 combs k xxs@(x:xs) = map (x:) (combs (k-1) xs) ++ combs k xs
