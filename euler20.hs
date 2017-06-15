@@ -1,3 +1,4 @@
 import Data.Digits
 
-(sum . digits 10) $ product [1..100]
+main = print $
+    (sum . digits 10) $ product [1..100]
