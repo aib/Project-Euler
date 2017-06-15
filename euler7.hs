@@ -1,3 +1,4 @@
 import Math.NumberTheory.Primes
 
-nthPrime 10001
+main = print $
+    nthPrime 10001
