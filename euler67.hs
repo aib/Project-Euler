@@ -3,7 +3,7 @@ import Data.Function
 import Data.Graph.Inductive.Graph
 import Data.Graph.Inductive.Tree
 import Data.List
-import Maybe
+import Data.Maybe
 
 type NodeLabel = Int
 type EdgeLabel = ()
