@@ -1,3 +1,4 @@
 import Math.NumberTheory.Primes.Factorisation
 
-(maximum . map fst . factorise) 600851475143
+main = print $
+    (maximum . map fst . factorise) 600851475143
