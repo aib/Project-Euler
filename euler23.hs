@@ -1,9 +1,9 @@
-import Math.NumberTheory.Primes.Factorisation
+import Math.NumberTheory.ArithmeticFunctions
 import qualified Data.Set as S
 
 abundant n = properDivSum n > n
   where
-    properDivSum x = sum . S.toList . (S.delete x) . divisors $ x
+    properDivSum x = sum . S.toList . (S.delete x) . divisors $ (x :: Integer)
 
 abundants = filter abundant [1..28123]
 
