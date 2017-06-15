@@ -1,6 +1,6 @@
-import Math.NumberTheory.Primes.Factorisation
+import Math.NumberTheory.ArithmeticFunctions
 
 triangle n = sum [1..n]
 
 main = print $
-    head . filter (\x -> divisorCount x > 500) . map triangle $ [1..]
+    head . filter (\x -> (length . divisors) (x :: Integer) > 500) . map triangle $ [1..]
