@@ -1,8 +1,8 @@
-import Math.NumberTheory.Primes.Factorisation
+import Math.NumberTheory.ArithmeticFunctions
 import Data.Set as S
 import Data.Map as M
 
-properDivSum x = sum . S.toList . (S.delete x) . divisors $ x
+properDivSum x = sum . S.toList . (S.delete x) . divisors $ (x :: Integer)
 
 pdsMap = M.fromList [(n,properDivSum n) | n <- [1..9999]]
 
