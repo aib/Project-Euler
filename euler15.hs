@@ -1,6 +1,9 @@
 import Data.Graph.Inductive.Graph
 import Data.Graph.Inductive.Tree
 
+--import qualified Data.GraphViz as GViz
+--import qualified Data.Text.Lazy.IO as LIO
+
 width = 5
 height = 5
 
@@ -28,6 +31,8 @@ paths (Just ct, g) p s e = (concatMap (\(ne,nn) -> paths (match nn g) (p ++ [ne]
     toAdjs = (\(_,_,_,a) -> a)
 
 --main = print $ length $ paths (Just (context graph 0), graph) [] 0 (width*height - 1)
+--main = LIO.putStr $ GViz.printDotGraph $ GViz.graphToDot GViz.nonClusteredParams graph
+
 
 --path is a string of 40 movements, 20 of which go right and 20 down: (R|D){40} where count(R) = count(D) = 20
 --40! total permutations, divide 20! because Rs are indistinct, 20! because Ds are indistinct
