@@ -1,7 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 
 module Common
-    (ordPermutations, combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations, countElems, pandigital)
+    (ordPermutations, combinations, multicombinations, fib, fibI, palindrome, consecElems, rotations, countElems, pandigital, fixedPointList, fixedPoint)
   where
 
 import Data.List
@@ -58,3 +58,13 @@ countElems = Map.toList . Map.fromListWith (+) . map (,1)
 -- Pandigital numbers
 pandigital :: Int -> [Integer] -> Bool
 pandigital d n = (length n == d) && (Set.fromList n == Set.fromList [1..toInteger d])
+
+-- Iterate a function until a fixed point is found (f(x) = x)
+fixedPointList :: Eq a => (a -> a) -> a -> [a]
+fixedPointList f x = x : unfoldr (iterateIfDifferent f) (x, f x)
+  where
+    iterateIfDifferent f (x, x') = if (x == x') then Nothing else Just (x', (x', f x'))
+
+-- Return the fixed point of a function
+fixedPoint :: Eq a => (a -> a) -> a -> a
+fixedPoint = ((last .) .) fixedPointList
