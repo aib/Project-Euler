@@ -2,4 +2,5 @@ arithmoi
 data-ordlist
 digits
 fgl
+memoize
 split
