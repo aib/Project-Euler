@@ -1,4 +1,5 @@
 import Data.Function
+import Data.Function.Memoize
 import Data.List
 
 import Common
@@ -14,7 +15,26 @@ addCoins newCoins base = base : ((:) <$> newCoins <*> [base])
 addCoinsAndCheck :: Int -> [Coin] -> [[Coin]] -> [[Coin]]
 addCoinsAndCheck coinSum newCoins bases = nub $ map sort $ filter (\cs -> (sum cs) <= coinSum) $ concatMap (addCoins newCoins) bases
 
+{-
 main = print $
     length $ filter (\cs -> sum cs == 200) allSums
   where
     allSums = (fixedPoint (addCoinsAndCheck 200 coins)) [[]]
+-}
+
+waysToMake :: [Coin] -> Int -> [[Coin]] -> [[Coin]]
+waysToMake coins target with
+    | target < 0        = []
+    | length coins == 0 = []
+    | target == 0       = [[]]
+    | otherwise         = nub $ concatMap (\c -> (map (sort . (c:)) (waysToMake coins (target - c) with))) coins
+
+waysToMake' :: ([Coin] -> Int -> [[Coin]] -> [[Coin]]) -> [Coin] -> Int -> [[Coin]] -> [[Coin]]
+waysToMake' self coins target with
+    | target < 0        = []
+    | length coins == 0 = []
+    | target == 0       = [[]]
+    | otherwise         = nub $ concatMap (\c -> (map (sort . (c:)) (self coins (target - c) with))) coins
+
+main = print $
+  length $ (memoFix3 waysToMake') coins 200 [[]]
