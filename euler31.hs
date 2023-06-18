@@ -1,40 +1,32 @@
-import Data.Function
-import Data.Function.Memoize
-import Data.List
+import qualified Data.Set as Set
+import qualified Data.Map as Map
 
 import Common
 
+import Control.Arrow
+
 type Coin = Int
+type Coins = Map.Map Coin Int
 
 -- 1p, 2p, 5p, 10p, 20p, 50p, £1 (100p) and £2 (200p)
-coins = [1, 2, 5, 10, 20, 50, 100, 200]
+coins = [1, 2, 5, 10, 20, 50, 100, 200] :: [Coin]
 
-addCoins :: [Coin] -> [Coin] -> [[Coin]]
-addCoins newCoins base = base : ((:) <$> newCoins <*> [base])
+addCoin :: Coin -> Coins -> Coins
+addCoin coin cs = Map.insertWith (+) coin 1 cs
 
-addCoinsAndCheck :: Int -> [Coin] -> [[Coin]] -> [[Coin]]
-addCoinsAndCheck coinSum newCoins bases = nub $ map sort $ filter (\cs -> (sum cs) <= coinSum) $ concatMap (addCoins newCoins) bases
+coinSum :: Coins -> Int
+coinSum = Map.foldlWithKey (\s k v -> s + (k * v)) 0
 
-{-
-main = print $
-    length $ filter (\cs -> sum cs == 200) allSums
+addCoinsWithCheck :: Int -> [Coin] -> Set.Set Coins -> Set.Set Coins
+addCoinsWithCheck amount newCoins base = Set.foldl (\a b -> foldl (\bcs c -> Set.insert c bcs) a (addAll b)) Set.empty base
   where
-    allSums = (fixedPoint (addCoinsAndCheck 200 coins)) [[]]
--}
+    addWithCheck n cs c = let cs' = addCoin c cs in if coinSum cs' <= n then cs' else Map.empty
+    addAll cs = map (addWithCheck amount cs) newCoins
 
-waysToMake :: [Coin] -> Int -> [[Coin]] -> [[Coin]]
-waysToMake coins target with
-    | target < 0        = []
-    | length coins == 0 = []
-    | target == 0       = [[]]
-    | otherwise         = nub $ concatMap (\c -> (map (sort . (c:)) (waysToMake coins (target - c) with))) coins
-
-waysToMake' :: ([Coin] -> Int -> [[Coin]] -> [[Coin]]) -> [Coin] -> Int -> [[Coin]] -> [[Coin]]
-waysToMake' self coins target with
-    | target < 0        = []
-    | length coins == 0 = []
-    | target == 0       = [[]]
-    | otherwise         = nub $ concatMap (\c -> (map (sort . (c:)) (self coins (target - c) with))) coins
+findCombinations amount =
+    length $ Set.filter (\cs -> coinSum cs == amount) allSums
+  where
+    allSums = (fixedPoint (addCoinsWithCheck amount coins)) (Set.singleton Map.empty)
 
 main = print $
-  length $ (memoFix3 waysToMake') coins 200 [[]]
+    map (id &&& findCombinations) [1..]
